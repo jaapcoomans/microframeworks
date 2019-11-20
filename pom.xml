@@ -23,6 +23,7 @@
 
     <modules>
         <module>armeria</module>
+        <module>blade</module>
         <module>javalin</module>
     </modules>
 
