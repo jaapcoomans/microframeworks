@@ -33,6 +33,7 @@
         <module>jooby</module>
         <module>ktor</module>
         <module>kumuluzee</module>
+        <module>micronaut</module>
     </modules>
 
     <dependencyManagement>
