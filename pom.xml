@@ -30,6 +30,7 @@
         <module>helidon-se</module>
         <module>http4k</module>
         <module>javalin</module>
+        <module>jooby</module>
     </modules>
 
     <dependencyManagement>
