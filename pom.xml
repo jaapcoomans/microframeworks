@@ -32,6 +32,7 @@
         <module>javalin</module>
         <module>jooby</module>
         <module>ktor</module>
+        <module>kumuluzee</module>
     </modules>
 
     <dependencyManagement>
