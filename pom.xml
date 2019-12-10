@@ -34,6 +34,7 @@
         <module>ktor</module>
         <module>kumuluzee</module>
         <module>micronaut</module>
+        <module>pippo</module>
     </modules>
 
     <dependencyManagement>
