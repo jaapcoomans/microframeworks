@@ -36,6 +36,8 @@
         <module>micronaut</module>
         <module>pippo</module>
         <module>ratpack</module>
+
+        <module>todo-backend</module>
     </modules>
 
     <dependencyManagement>
