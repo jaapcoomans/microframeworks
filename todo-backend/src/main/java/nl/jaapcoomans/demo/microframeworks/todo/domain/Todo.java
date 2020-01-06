@@ -50,4 +50,13 @@ public class Todo {
     public int getOrder() {
         return order;
     }
+
+    Todo update(PartialTodo todo) {
+        return new Todo(
+                this.id,
+                todo.title().orElse(this.title),
+                todo.completed().orElse(this.completed),
+                todo.order().orElse(this.order)
+        );
+    }
 }

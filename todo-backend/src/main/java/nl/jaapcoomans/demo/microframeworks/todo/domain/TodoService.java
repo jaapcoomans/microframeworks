@@ -29,31 +29,13 @@ public class TodoService {
         this.repository.deleteAll();
     }
 
-    public Optional<Todo> changeTitle(UUID id, String title) {
-        return this.repository.findById(id)
-                .map(todo -> todo.changeTitle(title))
-                .map(repository::persist);
-    }
-
-    public Optional<Todo> complete(UUID id) {
-        return this.repository.findById(id)
-                .map(Todo::complete)
-                .map(repository::persist);
-    }
-
-    public Optional<Todo> restore(UUID id) {
-        return this.repository.findById(id)
-                .map(Todo::restore)
-                .map(repository::persist);
-    }
-
-    public Optional<Todo> reorder(UUID id, int order) {
-        return this.repository.findById(id)
-                .map(todo -> todo.reorder(order))
-                .map(repository::persist);
-    }
-
     public void delete(UUID id) {
         this.repository.delete(id);
+    }
+
+    public Optional<Todo> updateTodo(UUID id, PartialTodo command) {
+        return this.repository.findById(id)
+                .map(todo -> todo.update(command))
+                .map(repository::persist);
     }
 }
