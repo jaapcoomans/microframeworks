@@ -1,7 +1,10 @@
 package nl.jaapcoomans.microframeworks.javalin;
 
 import io.javalin.Javalin;
+import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
 
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.path;
@@ -12,12 +15,25 @@ public class JavalinApplication {
     public static void main(String[] args) {
         Javalin.create()
                 .routes(() -> {
-                    path("/hello", () -> {
-                        get(JavalinApplication::helloWorld);
-                        get("/:name", JavalinApplication::hello);
-                    });
+                    path("/hello", helloWorldApi());
+                    path("/todos", todoApi());
                 })
                 .start(PORT);
+    }
+
+    private static EndpointGroup helloWorldApi() {
+        return () -> {
+            get(JavalinApplication::helloWorld);
+            get("/:name", JavalinApplication::hello);
+        };
+    }
+
+    private static EndpointGroup todoApi() {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+        var todoController = new TodoRestController(todoService, "http://localhost:7000/todos");
+
+        return todoController.defineEndpoints();
     }
 
     private static void hello(Context context) {
