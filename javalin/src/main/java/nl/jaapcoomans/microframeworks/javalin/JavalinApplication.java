@@ -2,6 +2,7 @@ package nl.jaapcoomans.microframeworks.javalin;
 
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.core.JavalinConfig;
 import io.javalin.http.Context;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
@@ -13,12 +14,16 @@ public class JavalinApplication {
     private static final int PORT = 7000;
 
     public static void main(String[] args) {
-        Javalin.create()
+        Javalin.create(JavalinApplication::configure)
                 .routes(() -> {
                     path("/hello", helloWorldApi());
                     path("/todos", todoApi());
                 })
                 .start(PORT);
+    }
+
+    private static void configure(JavalinConfig config) {
+        config.enableCorsForAllOrigins();
     }
 
     private static EndpointGroup helloWorldApi() {
