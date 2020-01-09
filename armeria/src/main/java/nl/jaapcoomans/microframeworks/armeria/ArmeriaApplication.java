@@ -2,11 +2,11 @@ package nl.jaapcoomans.microframeworks.armeria;
 
 import com.linecorp.armeria.common.HttpRequest;
 import com.linecorp.armeria.common.HttpResponse;
-import com.linecorp.armeria.server.AbstractHttpService;
 import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.ServiceRequestContext;
-import com.linecorp.armeria.server.logging.LoggingService;
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,9 +20,18 @@ public class ArmeriaApplication {
         sb.service("/hello", ArmeriaApplication::helloWorld);
         sb.service("/hello/{name}", ArmeriaApplication::hello);
 
+        TodoRestController todoBackendApi = createTodoBackend();
+        sb.annotatedService(todoBackendApi);
+
         Server server = sb.build();
         CompletableFuture<Void> future = server.start();
         future.join();
+    }
+
+    private static TodoRestController createTodoBackend() {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+        return new TodoRestController(todoService, "http://localhost:7000/todos");
     }
 
     private static HttpResponse helloWorld(ServiceRequestContext context, HttpRequest request) {
