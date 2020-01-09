@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -43,7 +44,7 @@ abstract class BaseTodoBackendTest {
                 .when().options(API_ROOT)
                 .then()
                 .header("Access-Control-Allow-Origin", notNullValue())
-                .header("Access-Control-Allow-Headers", HttpHeaders.CONTENT_TYPE)
+                .header("Access-Control-Allow-Headers", equalToIgnoringCase(HttpHeaders.CONTENT_TYPE))
                 .header("Access-Control-Allow-Methods", "GET");
 
         RestAssured.given()
