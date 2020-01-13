@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.testcontainers.containers.GenericContainer;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
@@ -44,8 +46,8 @@ abstract class BaseTodoBackendTest {
                 .when().options(API_ROOT)
                 .then()
                 .header("Access-Control-Allow-Origin", notNullValue())
-                .header("Access-Control-Allow-Headers", equalToIgnoringCase(HttpHeaders.CONTENT_TYPE))
-                .header("Access-Control-Allow-Methods", "GET");
+                .header("Access-Control-Allow-Headers", anyOf(equalToIgnoringCase(HttpHeaders.CONTENT_TYPE), equalTo("*")))
+                .header("Access-Control-Allow-Methods", containsString("GET"));
 
         RestAssured.given()
                 .header(HttpHeaders.ACCEPT, "application/json")
