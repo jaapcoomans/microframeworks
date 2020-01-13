@@ -1,14 +1,44 @@
 package nl.jaapcoomans.microframeworks.blade;
 
 import com.blade.Blade;
+import com.blade.kit.JsonKit;
 import com.blade.mvc.RouteContext;
+import com.blade.security.web.cors.CorsConfiger;
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
+
+import java.util.List;
 
 public class BladeApplication {
     public static void main(String[] args) {
-        Blade.of()
+        /*
+         * The default JsonKit is not configurable and fails to correctly serialize UUID. Luckily the actual
+         * serialization is pluggable. Therefore created a custom implementation based on Jackson.
+         */
+        JsonKit.jsonSupprt(new JacksonJsonSupport());
+
+        Blade application = Blade.of()
+                .enableCors(true, corsConfiger())
                 .get("/hello", BladeApplication::helloWorld)
-                .get("/hello/:name", BladeApplication::hello)
-                .start(BladeApplication.class, args);
+                .get("/hello/:name", BladeApplication::hello);
+
+        createTodoBackend(application);
+
+        application.start(BladeApplication.class, args);
+    }
+
+    private static CorsConfiger corsConfiger() {
+        return CorsConfiger.builder()
+                .allowedHeaders(List.of("Content-Type"))
+                .build();
+    }
+
+    private static void createTodoBackend(Blade application) {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+        var todoApi = new TodoRestController(todoService, "http://localhost:7000/todos");
+
+        todoApi.initializeRoutes(application);
     }
 
     private static void helloWorld(RouteContext context) {
