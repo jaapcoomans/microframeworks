@@ -1,4 +1,4 @@
-package nl.jaapcoomans.demo.microframweorks.helidon.mp;
+package nl.jaapcoomans.microframeworks.helidon.mp;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;

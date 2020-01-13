@@ -42,6 +42,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Todo-backend -->
+        <dependency>
+            <groupId>nl.jaapcoomans.demo.microframeworks</groupId>
+            <artifactId>todo-backend</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -60,24 +67,41 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <finalName>application</finalName>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
-                        <id>copy-libs</id>
+                        <id>dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/libs</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jboss.jandex</groupId>
-                <artifactId>jandex-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>make-index</id>
-                    </execution>
-                </executions>
+                <configuration>
+                    <overWriteReleases>false</overWriteReleases>
+                    <overWriteSnapshots>false</overWriteSnapshots>
+                    <overWriteIfNewer>true</overWriteIfNewer>
+                    <includeScope>runtime</includeScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>
