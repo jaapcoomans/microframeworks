@@ -5,7 +5,7 @@ import io.helidon.webserver.ServerRequest;
 import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
 
-public class HelloWorldService implements Service {
+public class HelloWorldRestController implements Service {
     @Override
     public void update(Routing.Rules rules) {
         rules

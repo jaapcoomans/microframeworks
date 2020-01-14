@@ -1,13 +1,14 @@
 package nl.jaapcoomans.demo.microframeworks.helidon.se;
 
+import io.helidon.media.jsonb.server.JsonBindingSupport;
 import io.helidon.webserver.Routing;
 import io.helidon.webserver.ServerConfiguration;
 import io.helidon.webserver.WebServer;
-
-import java.io.IOException;
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
 
 public class HelidonApplication {
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) {
         ServerConfiguration serverConfig =
                 ServerConfiguration.builder().port(8080).build();
 
@@ -30,10 +31,21 @@ public class HelidonApplication {
     }
 
     private static Routing createRouting() {
-        HelloWorldService helloWorldService = new HelloWorldService();
+        HelloWorldRestController helloWorldRestController = new HelloWorldRestController();
+
+        TodoRestController todoRestController = createTodoBackend();
 
         return Routing.builder()
-                .register("/hello", helloWorldService)
+                .register(JsonBindingSupport.create())
+                .register("/hello", helloWorldRestController)
+                .register("/todos", todoRestController)
                 .build();
+    }
+
+    private static TodoRestController createTodoBackend() {
+        var repository = new InMemoryTodoRepository();
+        var todoService = new TodoService(repository);
+
+        return new TodoRestController(todoService, "http://localhost:8080/todos");
     }
 }
