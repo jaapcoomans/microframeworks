@@ -26,6 +26,7 @@
     <modules>
         <module>armeria</module>
         <module>blade</module>
+        <module>dropwizard</module>
         <module>helidon-mp</module>
         <module>helidon-se</module>
         <module>http4k</module>
