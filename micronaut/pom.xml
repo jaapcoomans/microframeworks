@@ -35,6 +35,13 @@
             <artifactId>micronaut-http-server-netty</artifactId>
         </dependency>
 
+        <!-- Todo-backend -->
+        <dependency>
+            <groupId>nl.jaapcoomans.demo.microframeworks</groupId>
+            <artifactId>todo-backend</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -90,6 +97,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

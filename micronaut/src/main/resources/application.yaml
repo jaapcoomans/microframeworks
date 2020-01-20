@@ -1,0 +1,9 @@
+---
+
+micronaut:
+  server:
+    cors:
+      enabled: true
+
+todos:
+  baseUrl: http://localhost:8080/todos
