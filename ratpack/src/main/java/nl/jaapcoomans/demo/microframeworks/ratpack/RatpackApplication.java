@@ -1,6 +1,10 @@
 package nl.jaapcoomans.demo.microframeworks.ratpack;
 
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
 import ratpack.handling.Context;
+import ratpack.http.HttpMethod;
+import ratpack.http.Status;
 import ratpack.server.RatpackServer;
 import ratpack.server.RatpackServerSpec;
 import ratpack.server.ServerConfig;
@@ -13,11 +17,28 @@ public class RatpackApplication {
     }
 
     private static void init(RatpackServerSpec server) {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+        var todoRestController = new TodoRestController(todoService, "http://localhost:8080/todos");
+
         server.serverConfig(ServerConfig.embedded().port(PORT))
-                .handlers(chain -> chain
-                        .get("hello", RatpackApplication::helloWorld)
-                        .get("hello/:name", RatpackApplication::hello)
-                );
+                .handlers(chain -> {
+                    chain.all(RatpackApplication::cors)
+                            .get("hello", RatpackApplication::helloWorld)
+                            .get("hello/:name", RatpackApplication::hello);
+                    todoRestController.initializeEndpoints(chain);
+                });
+    }
+
+    private static void cors(Context context) {
+        context.header("Access-Control-Allow-Origin", "*");
+        if (context.getRequest().getMethod() == HttpMethod.OPTIONS) {
+            context.header("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
+            context.header("Access-Control-Allow-Headers", "content-type");
+            context.getResponse().status(Status.OK).send();
+        } else {
+            context.next();
+        }
     }
 
     private static void helloWorld(Context context) {
