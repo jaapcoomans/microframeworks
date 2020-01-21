@@ -1,24 +1,45 @@
 package nl.jaapcoomans.demo.microframeworks.ktor
 
+import io.ktor.application.Application
 import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.CORS
+import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
+import io.ktor.jackson.jackson
 import io.ktor.response.respondText
 import io.ktor.routing.get
+import io.ktor.routing.options
 import io.ktor.routing.routing
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
 
-fun main() {
-    val server = embeddedServer(Netty, 8080) {
-        routing {
-            get("/hello") {
-                call.respondText("Hello World!", ContentType.Text.Plain)
-            }
-            get("/hello/{name}") {
-                call.respondText("Hello, ${call.parameters["name"]?.capitalize()}!", ContentType.Text.Plain)
-            }
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+fun Application.module() {
+    install(ContentNegotiation) {
+        jackson {
         }
     }
+    install(CORS) {
+        method(HttpMethod.Get)
+        method(HttpMethod.Post)
+        method(HttpMethod.Delete)
+        method(HttpMethod.Patch)
+        method(HttpMethod.Options)
+        anyHost()
+        allowNonSimpleContentTypes = true
+        allowSameOrigin = false
+    }
 
-    server.start(wait = true)
+    routing {
+        get("/hello") {
+            call.respondText("Hello World!", ContentType.Text.Plain)
+        }
+        get("/hello/{name}") {
+            call.respondText("Hello, ${call.parameters["name"]?.capitalize()}!", ContentType.Text.Plain)
+        }
+        //options { }
+
+        todoRoutes()
+    }
 }
