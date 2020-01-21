@@ -48,7 +48,7 @@ abstract class BaseTodoBackendTest {
                 .then()
                 .header("Access-Control-Allow-Origin", notNullValue())
                 .header("Access-Control-Allow-Headers", anyOf(equalToIgnoringCase(HttpHeaders.CONTENT_TYPE), equalTo("*")))
-                .header("Access-Control-Allow-Methods", containsString("GET"));
+                .header("Access-Control-Allow-Methods", notNullValue());
 
         RestAssured.given()
                 .header(HttpHeaders.ACCEPT, "application/json")
