@@ -3,6 +3,7 @@ package nl.jaapcoomans.demo.microframeworks.todo.peristsence;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.Todo;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public class InMemoryTodoRepository implements TodoRepository {
 
     @Override
     public List<Todo> findAll() {
-        return List.copyOf(TODOS.values());
+        return new ArrayList<>(TODOS.values());
     }
 
     @Override
