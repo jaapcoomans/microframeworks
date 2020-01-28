@@ -1,6 +1,10 @@
 package nl.jaapcoomans.demo.microframeworks.pippo;
 
+import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
+import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
+import ro.pippo.core.HttpConstants;
 import ro.pippo.core.Pippo;
+import ro.pippo.core.route.CorsHandler;
 import ro.pippo.core.route.RouteContext;
 
 public class PippoApplication {
@@ -10,9 +14,30 @@ public class PippoApplication {
         Pippo pippo = new Pippo();
         pippo.getServer().setPort(PORT);
 
+        initializeCors(pippo);
+
         pippo.GET("/hello", PippoApplication::helloWorld);
         pippo.GET("/hello/{name}", PippoApplication::hello);
+
+        var todoRestController = createTodoBackend();
+        todoRestController.initializeRoutes(pippo);
+
         pippo.start();
+    }
+
+    private static void initializeCors(Pippo pippo) {
+        var corsHandler = new CorsHandler("*");
+        corsHandler.allowHeaders(HttpConstants.Header.CONTENT_TYPE);
+        corsHandler.allowMethods("GET,POST,PATCH,DELETE");
+
+        pippo.ANY("/.*", corsHandler);
+    }
+
+    private static TodoRestController createTodoBackend() {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+
+        return new TodoRestController(todoService, "http://localhost:8080/todos");
     }
 
     private static void helloWorld(RouteContext context) {
