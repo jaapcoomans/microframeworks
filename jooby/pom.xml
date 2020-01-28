@@ -13,14 +13,37 @@
     </parent>
 
     <properties>
-        <jooby.version>2.3.1</jooby.version>
+        <jooby.version>2.6.0</jooby.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.jooby</groupId>
+                <artifactId>jooby-bom</artifactId>
+                <version>${jooby.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Jooby: web framework -->
         <dependency>
             <groupId>io.jooby</groupId>
             <artifactId>jooby-netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jooby</groupId>
+            <artifactId>jooby-jackson</artifactId>
+        </dependency>
+
+        <!-- Todo-backend -->
+        <dependency>
+            <groupId>nl.jaapcoomans.demo.microframeworks</groupId>
+            <artifactId>todo-backend</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Logging -->
@@ -48,15 +71,16 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.jooby</groupId>
-                <artifactId>jooby-bom</artifactId>
-                <version>${jooby.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
