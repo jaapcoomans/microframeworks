@@ -7,13 +7,18 @@ import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.ServiceRequestContext;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ArmeriaApplication {
     private static final int PORT = 8080;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArmeriaApplication.class);
 
     public static void main(String[] args) {
+        final long startTime = System.currentTimeMillis();
+
         ServerBuilder sb = Server.builder();
         sb.http(PORT);
 
@@ -26,6 +31,8 @@ public class ArmeriaApplication {
         Server server = sb.build();
         CompletableFuture<Void> future = server.start();
         future.join();
+
+        LOGGER.info("Started in {}   ms", System.currentTimeMillis() - startTime);
     }
 
     private static TodoRestController createTodoBackend() {
