@@ -9,6 +9,7 @@ import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoReposito
 
 public class HelidonApplication {
     public static void main(final String[] args) {
+        long startTime = System.currentTimeMillis();
         ServerConfiguration serverConfig =
                 ServerConfiguration.builder().port(8080).build();
 
@@ -18,8 +19,9 @@ public class HelidonApplication {
         // print a message at shutdown. If unsuccessful, print the exception.
         server.start()
                 .thenAccept(ws -> {
+                    long bootTime = System.currentTimeMillis() - startTime;
                     System.out.println(
-                            "WEB server is up! http://localhost:" + ws.port() + "/hello");
+                            "WEB server is up! http://localhost:" + ws.port() + "/ in " + bootTime + "ms");
                     ws.whenShutdown().thenRun(()
                             -> System.out.println("WEB server is DOWN. Good bye!"));
                 })
