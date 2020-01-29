@@ -41,7 +41,7 @@ abstract class BaseTodoBackendTest {
         RestAssured.given()
                 .header("Access-Control-Request-Headers", HttpHeaders.CONTENT_TYPE)
                 .header("Access-Control-Request-Method", "GET")
-                .header("Origin", getBaseUrl())
+                .header("Origin", "http://crossorigin.example.org")
                 .baseUri(getBaseUrl())
                 .when().options(API_ROOT)
                 .then()
