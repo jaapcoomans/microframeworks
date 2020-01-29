@@ -16,6 +16,8 @@ public class JoobyApplication {
     private static final int PORT = 8080;
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+
         var jacksonModule = new JacksonModule();
 
         var todoRepository = new InMemoryTodoRepository();
@@ -32,6 +34,11 @@ public class JoobyApplication {
             app.get("/hello/{name}", JoobyApplication::hello);
 
             todoController.initializeRoutes(app);
+
+            app.onStarted(() -> {
+                long bootTime = System.currentTimeMillis() - startTime;
+                System.out.println("Started in " + bootTime + "ms.");
+            });
         });
     }
 
