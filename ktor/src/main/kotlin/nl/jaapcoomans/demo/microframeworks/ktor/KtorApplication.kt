@@ -1,8 +1,10 @@
 package nl.jaapcoomans.demo.microframeworks.ktor
 
 import io.ktor.application.Application
+import io.ktor.application.ApplicationStarted
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.application.log
 import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
@@ -16,6 +18,8 @@ import io.ktor.routing.routing
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
+    val startTime = System.currentTimeMillis()
+
     install(ContentNegotiation) {
         jackson {
         }
@@ -38,8 +42,12 @@ fun Application.module() {
         get("/hello/{name}") {
             call.respondText("Hello, ${call.parameters["name"]?.capitalize()}!", ContentType.Text.Plain)
         }
-        //options { }
 
         todoRoutes()
+    }
+
+    environment.monitor.subscribe(ApplicationStarted) {
+        val bootTime = System.currentTimeMillis() - startTime
+        log.info("Started in ${bootTime} ms.");
     }
 }
