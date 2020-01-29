@@ -2,6 +2,8 @@ package nl.jaapcoomans.demo.microframeworks.ratpack;
 
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ratpack.handling.Context;
 import ratpack.http.HttpMethod;
 import ratpack.http.Status;
@@ -10,10 +12,15 @@ import ratpack.server.RatpackServerSpec;
 import ratpack.server.ServerConfig;
 
 public class RatpackApplication {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RatpackApplication.class);
     private static final int PORT = 8080;
 
     public static void main(String[] args) throws Exception {
+        long startTime = System.currentTimeMillis();
+
         RatpackServer.start(RatpackApplication::init);
+
+        LOGGER.info("Started in {} ms", System.currentTimeMillis() - startTime);
     }
 
     private static void init(RatpackServerSpec server) {
