@@ -35,6 +35,7 @@
         <module>ktor</module>
         <module>kumuluzee</module>
         <module>micronaut</module>
+        <module>minijax</module>
         <module>pippo</module>
         <module>ratpack</module>
         <module>spark</module>
