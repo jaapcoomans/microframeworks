@@ -28,11 +28,13 @@ fun Route.todoRoutes() {
         }
         get("/{id}") {
             val id = call.parameters["id"]
-            val todo = todoService.findById(UUID.fromString(id)).map { it.wrap() }
-            if (todo.isPresent) {
-                call.respond(todo.get())
-            } else {
-                call.respond(HttpStatusCode.NotFound)
+            val todo = todoService.findById(UUID.fromString(id))
+                    .map { it.wrap() }
+                    .orElse(null)
+
+            when(todo) {
+                null -> call.respond(HttpStatusCode.NotFound)
+                else -> call.respond(todo)
             }
         }
         post {
