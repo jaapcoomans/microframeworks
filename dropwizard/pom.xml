@@ -14,7 +14,7 @@
 
     <properties>
         <dropwizard.version>2.0.0</dropwizard.version>
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.9.10.1</jackson.version>
     </properties>
 
     <dependencyManagement>
