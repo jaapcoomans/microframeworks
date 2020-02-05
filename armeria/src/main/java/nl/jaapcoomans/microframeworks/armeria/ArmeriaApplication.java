@@ -38,7 +38,7 @@ public class ArmeriaApplication {
     private static TodoRestController createTodoBackend() {
         var todoRepository = new InMemoryTodoRepository();
         var todoService = new TodoService(todoRepository);
-        return new TodoRestController(todoService, "http://localhost:7000/todos");
+        return new TodoRestController(todoService, "http://localhost:8080/todos");
     }
 
     private static HttpResponse helloWorld(ServiceRequestContext context, HttpRequest request) {
