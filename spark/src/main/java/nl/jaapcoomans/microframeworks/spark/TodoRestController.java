@@ -11,6 +11,8 @@ import spark.Request;
 import spark.Response;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ class TodoRestController {
         this.baseUrl = baseUrl;
     }
 
-    Object getAll(Request request, Response response) {
+    List<TodoDTO> getAll(Request request, Response response) {
         response.header("Content-Type", "application/json");
 
         return this.todoService.findAll().stream()
@@ -36,7 +38,7 @@ class TodoRestController {
     }
 
 
-    Object getTodo(Request request, Response response) {
+    Optional<TodoDTO> getTodo(Request request, Response response) {
         UUID id = UUID.fromString(request.params(ID_PATH_PARAM));
 
         response.header("Content-Type", "application/json");
@@ -61,25 +63,24 @@ class TodoRestController {
         return this.wrap(result);
     }
 
-    Object deleteAll(Request request, Response response) {
+    String deleteAll(Request request, Response response) {
         this.todoService.deleteAll();
         response.status(HttpStatus.NO_CONTENT_204);
         return "";
     }
 
 
-    Object patchTodo(Request request, Response response) {
-        UUID id = UUID.fromString(request.params(ID_PATH_PARAM));
+    Optional<TodoDTO> patchTodo(Request request, Response response) {
+        var id = UUID.fromString(request.params(ID_PATH_PARAM));
+        var command = deserialize(request.body(), PartialTodo.class);
 
         response.header("Content-Type", "application/json");
-
-        PartialTodo command = deserialize(request.body(), PartialTodo.class);
 
         return this.todoService.updateTodo(id, command)
                 .map(this::wrap);
     }
 
-    Object deleteTodo(Request request, Response response) {
+    String deleteTodo(Request request, Response response) {
         UUID id = UUID.fromString(request.params(ID_PATH_PARAM));
         this.todoService.delete(id);
 
