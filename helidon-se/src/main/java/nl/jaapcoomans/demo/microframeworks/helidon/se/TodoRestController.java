@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static io.helidon.common.http.Http.Method.DELETE;
+import static io.helidon.common.http.Http.Method.GET;
+import static io.helidon.common.http.Http.Method.POST;
+import static io.helidon.common.http.Http.Status.*;
+
 public class TodoRestController implements Service {
     private static final String ID_PATH_PARAM = "id";
 
@@ -31,21 +36,21 @@ public class TodoRestController implements Service {
 
     @Override
     public void update(Routing.Rules rules) {
-        rules
-                .anyOf(List.of(Http.Method.GET, Http.Method.DELETE, Http.Method.POST), this::corsFilter)
+        rules.anyOf(List.of(GET, DELETE, POST), this::corsFilter)
                 .options(this::corsPreflight)
                 .get("/", this::getAll)
-                .post("/", Handler.create(CreateTodoCommand.class, this::createTodo))
+                .post("/",
+                        Handler.create(CreateTodoCommand.class, this::createTodo))
                 .delete("/", this::deleteAll)
                 .get("/{id}", this::getTodo)
                 .delete("/{id}", this::deleteTodo)
-                .anyOf(List.of(PATCH), "/{id}", Handler.create(PartialTodo.class, this::patchTodo))
-        ;
+                .anyOf(List.of(PATCH), "/{id}",
+                        Handler.create(PartialTodo.class, this::patchTodo));
     }
 
     private void corsPreflight(ServerRequest request, ServerResponse response) {
         this.addCorsHeaders(response);
-        response.status(Http.Status.OK_200).send();
+        response.status(OK_200).send();
     }
 
     private void corsFilter(ServerRequest request, ServerResponse response) {
@@ -73,7 +78,8 @@ public class TodoRestController implements Service {
 
         this.todoService.findById(id)
                 .map(this::wrap)
-                .ifPresentOrElse(response::send, () -> response.status(Http.Status.NOT_FOUND_404).send());
+                .ifPresentOrElse(response::send,
+                        () -> response.status(NOT_FOUND_404).send());
     }
 
     private void createTodo(ServerRequest request, ServerResponse response, CreateTodoCommand command) {
@@ -83,7 +89,7 @@ public class TodoRestController implements Service {
 
     private void deleteAll(ServerRequest request, ServerResponse response) {
         this.todoService.deleteAll();
-        response.status(Http.Status.NO_CONTENT_204).send();
+        response.status(NO_CONTENT_204).send();
     }
 
     private void patchTodo(ServerRequest request, ServerResponse response, PartialTodo command) {
@@ -91,13 +97,13 @@ public class TodoRestController implements Service {
 
         this.todoService.updateTodo(id, command)
                 .map(this::wrap)
-                .ifPresentOrElse(response::send, () -> response.status(Http.Status.NOT_FOUND_404).send());
+                .ifPresentOrElse(response::send, () -> response.status(NOT_FOUND_404).send());
     }
 
     private void deleteTodo(ServerRequest request, ServerResponse response) {
         UUID id = UUID.fromString(request.path().param(ID_PATH_PARAM));
         this.todoService.delete(id);
-        response.status(Http.Status.NO_CONTENT_204).send();
+        response.status(NO_CONTENT_204).send();
     }
 
     private TodoDTO wrap(Todo todo) {
