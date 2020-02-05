@@ -14,8 +14,7 @@ public class PippoApplication {
         Pippo pippo = new Pippo();
         pippo.getServer().setPort(PORT);
 
-        initializeCors(pippo);
-
+        pippo.ANY("/.*", createCorsHandler());
         pippo.GET("/hello", PippoApplication::helloWorld);
         pippo.GET("/hello/{name}", PippoApplication::hello);
 
@@ -23,6 +22,14 @@ public class PippoApplication {
         todoRestController.initializeRoutes(pippo);
 
         pippo.start();
+    }
+
+    private static CorsHandler createCorsHandler() {
+        var corsHandler = new CorsHandler("*");
+        corsHandler.allowHeaders(HttpConstants.Header.CONTENT_TYPE);
+        corsHandler.allowMethods("GET,POST,PATCH,DELETE");
+
+        return corsHandler;
     }
 
     private static void initializeCors(Pippo pippo) {

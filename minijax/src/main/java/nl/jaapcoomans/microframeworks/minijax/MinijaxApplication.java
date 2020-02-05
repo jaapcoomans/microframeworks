@@ -16,6 +16,7 @@ public class MinijaxApplication {
         var todoRepository = new InMemoryTodoRepository();
 
         new Minijax()
+                .port(8080)
                 .register(JsonFeature.class)
                 .register(CorsFilter.class)
                 .register(HelloWorldController.class)

@@ -21,8 +21,7 @@ fun Application.module() {
     val startTime = System.currentTimeMillis()
 
     install(ContentNegotiation) {
-        jackson {
-        }
+        jackson {}
     }
     install(CORS) {
         method(HttpMethod.Get)

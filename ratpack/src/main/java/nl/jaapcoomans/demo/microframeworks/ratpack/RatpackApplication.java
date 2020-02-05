@@ -24,9 +24,7 @@ public class RatpackApplication {
     }
 
     private static void init(RatpackServerSpec server) {
-        var todoRepository = new InMemoryTodoRepository();
-        var todoService = new TodoService(todoRepository);
-        var todoRestController = new TodoRestController(todoService, "http://localhost:8080/todos");
+        var todoRestController = createTodoBackend();
 
         server.serverConfig(ServerConfig.embedded().port(PORT))
                 .handlers(chain -> {
@@ -35,6 +33,12 @@ public class RatpackApplication {
                             .get("hello/:name", RatpackApplication::hello);
                     todoRestController.initializeEndpoints(chain);
                 });
+    }
+
+    private static TodoRestController createTodoBackend()  {
+        var todoRepository = new InMemoryTodoRepository();
+        var todoService = new TodoService(todoRepository);
+        return new TodoRestController(todoService, "http://localhost:8080/todos");
     }
 
     private static void cors(Context context) {

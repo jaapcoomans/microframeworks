@@ -61,13 +61,15 @@ public class TodoRestController {
     }
 
     private void patchTodo(RouteContext context) {
-        UUID id = UUID.fromString(context.getParameter(ID_PATH_PARAM).toString());
+        var id = UUID.fromString(context.getParameter(ID_PATH_PARAM)
+                .toString());
 
         var command = context.createEntityFromBody(PartialTodo.class);
 
         this.todoService.updateTodo(id, command)
                 .map(this::wrap)
-                .ifPresentOrElse(context.json()::send, () -> context.status(404));
+                .ifPresentOrElse(context.json()::send,
+                        () -> context.status(404));
     }
 
     private void deleteTodo(RouteContext context) {

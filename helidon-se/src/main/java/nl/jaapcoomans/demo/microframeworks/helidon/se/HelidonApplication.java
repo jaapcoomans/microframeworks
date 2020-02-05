@@ -10,13 +10,10 @@ import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoReposito
 public class HelidonApplication {
     public static void main(final String[] args) {
         long startTime = System.currentTimeMillis();
-        ServerConfiguration serverConfig =
+        var serverConfig =
                 ServerConfiguration.builder().port(8080).build();
+        var server = WebServer.create(serverConfig, createRouting());
 
-        WebServer server = WebServer.create(serverConfig, createRouting());
-
-        // Try to start the server. If successful, print some info and arrange to
-        // print a message at shutdown. If unsuccessful, print the exception.
         server.start()
                 .thenAccept(ws -> {
                     long bootTime = System.currentTimeMillis() - startTime;

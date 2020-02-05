@@ -41,19 +41,18 @@ class TodoRestController {
     @Get("/todos")
     @ProducesJson
     public List<TodoDTO> getAll() {
-        List<TodoDTO> todos = this.todoService.findAll().stream()
+        return this.todoService.findAll().stream()
                 .map(this::wrap)
                 .collect(Collectors.toList());
-
-        return todos;
     }
 
     @Get("/todos/{id}")
     @ProducesJson
-    public HttpResponse getTodo(@Param("id") String id, ServiceRequestContext context) throws JsonProcessingException {
+    public HttpResponse getTodo(@Param("id") String id) throws JsonProcessingException {
         return this.todoService.findById(UUID.fromString(id))
                 .map(this::wrap)
-                .map(todo -> HttpResponse.of(HttpStatus.OK, MediaType.JSON, this.convertToJson(todo)))
+                .map(todo -> HttpResponse.of(HttpStatus.OK, MediaType.JSON,
+                        this.convertToJson(todo)))
                 .orElse(HttpResponse.of(404));
     }
 
@@ -69,8 +68,9 @@ class TodoRestController {
     @ProducesJson
     @ConsumesJson
     public TodoDTO createTodo(CreateTodoCommand command) {
-        Todo result = this.todoService.createNewTodo(command.getTitle(), command.getOrder());
-        return this.wrap(result);
+        Todo todo = this.todoService.createNewTodo(command.getTitle(),
+                command.getOrder());
+        return this.wrap(todo);
     }
 
     @Delete("/todos")
