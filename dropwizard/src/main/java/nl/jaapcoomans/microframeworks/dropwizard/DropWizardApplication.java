@@ -13,7 +13,7 @@ import java.util.EnumSet;
 
 public class DropWizardApplication extends Application<Configuration> {
     public static void main(String[] args) throws Exception {
-        DropWizardApplication application = new DropWizardApplication();
+        var application = new DropWizardApplication();
         application.run(args);
     }
 
@@ -21,10 +21,10 @@ public class DropWizardApplication extends Application<Configuration> {
     public void run(Configuration configuration, Environment environment) {
         this.enableCors(environment);
 
-        HelloWorldController helloWorldController = new HelloWorldController();
+        var helloWorldController = new HelloWorldController();
         environment.jersey().register(helloWorldController);
 
-        TodoRestController todoRestController = createTodoBackend();
+        var todoRestController = createTodoBackend();
         environment.jersey().register(todoRestController);
     }
 
