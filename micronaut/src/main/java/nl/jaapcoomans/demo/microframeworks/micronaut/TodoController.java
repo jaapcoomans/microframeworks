@@ -19,6 +19,7 @@ import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -60,11 +61,14 @@ public class TodoController {
         return HttpResponseFactory.INSTANCE.status(HttpStatus.NO_CONTENT);
     }
 
-    @Patch(uri = "/{id}", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON)
-    public TodoDTO patchTodo(@PathVariable String id, PartialTodo command) {
+    @Patch(uri = "/{id}",
+            produces = MediaType.APPLICATION_JSON,
+            consumes = MediaType.APPLICATION_JSON)
+    public Optional<TodoDTO> patchTodo(@PathVariable String id,
+                                       PartialTodo command) {
+
         return this.todoService.updateTodo(UUID.fromString(id), command)
-                .map(this::wrap)
-                .orElse(null);
+                .map(this::wrap);
     }
 
     @Delete(uri = "/{id}")
