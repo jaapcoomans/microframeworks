@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <armeria.version>0.95.0</armeria.version>
+        <armeria.version>0.97.0</armeria.version>
     </properties>
 
     <dependencies>
