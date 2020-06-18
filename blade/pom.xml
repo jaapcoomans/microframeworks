@@ -14,7 +14,7 @@
 
     <properties>
         <blade.version>2.0.14.RELEASE</blade.version>
-        <jackson.version>2.9.10.4</jackson.version>
+        <jackson.version>2.10.0.pr1</jackson.version>
     </properties>
 
     <dependencies>
