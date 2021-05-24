@@ -12,8 +12,8 @@ import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.response.respondText
 import io.ktor.routing.get
-import io.ktor.routing.options
 import io.ktor.routing.routing
+import java.util.Locale
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -49,4 +49,8 @@ fun Application.module() {
         val bootTime = System.currentTimeMillis() - startTime
         log.info("Started in ${bootTime} ms.");
     }
+}
+
+fun String.capitalize(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 }
