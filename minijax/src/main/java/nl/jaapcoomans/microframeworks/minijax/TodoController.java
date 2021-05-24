@@ -1,24 +1,25 @@
 package nl.jaapcoomans.microframeworks.minijax;
 
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.OPTIONS;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import nl.jaapcoomans.demo.microframeworks.todo.api.CreateTodoCommand;
 import nl.jaapcoomans.demo.microframeworks.todo.api.TodoDTO;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.PartialTodo;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.Todo;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.OPTIONS;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -64,11 +65,10 @@ public class TodoController {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTodo(@PathParam("id") String id) {
+    public TodoDTO getTodo(@PathParam("id") String id) {
         return this.todoService.findById(UUID.fromString(id))
                 .map(this::wrap)
-                .map(body -> Response.ok(body).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+                .orElse(null);
     }
 
     @POST

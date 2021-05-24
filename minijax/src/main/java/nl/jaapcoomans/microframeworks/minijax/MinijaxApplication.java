@@ -18,10 +18,10 @@ public class MinijaxApplication {
         new Minijax()
                 .port(8080)
                 .register(JsonFeature.class)
-                .register(CorsFilter.class)
                 .register(HelloWorldController.class)
                 .register(new TodoService(todoRepository))
                 .register(TodoController.class)
+                .allowCors("/")
                 .start();
 
         LOGGER.info("Started in {} ms", System.currentTimeMillis() - startTime);
