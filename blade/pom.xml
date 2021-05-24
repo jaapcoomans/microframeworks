@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <blade.version>2.0.14.RELEASE</blade.version>
-        <jackson.version>2.9.10.7</jackson.version>
+        <blade.version>2.0.15.RELEASE</blade.version>
+        <jackson.version>2.12.3</jackson.version>
     </properties>
 
     <dependencies>
