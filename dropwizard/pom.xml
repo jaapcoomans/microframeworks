@@ -13,8 +13,8 @@
     </parent>
 
     <properties>
-        <dropwizard.version>2.0.0</dropwizard.version>
-        <jackson.version>2.9.10.7</jackson.version>
+        <dropwizard.version>2.0.21</dropwizard.version>
+        <jackson.version>2.12.3</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -41,13 +41,6 @@
             <groupId>nl.jaapcoomans.demo.microframeworks</groupId>
             <artifactId>todo-backend</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Jackson: JSON serialization -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 
