@@ -1,18 +1,19 @@
 package nl.jaapcoomans.demo.microframeworks.helidon.se;
 
-import io.helidon.media.jsonb.server.JsonBindingSupport;
+import io.helidon.media.jackson.JacksonSupport;
 import io.helidon.webserver.Routing;
-import io.helidon.webserver.ServerConfiguration;
 import io.helidon.webserver.WebServer;
+import io.helidon.webserver.cors.CorsSupport;
+import io.helidon.webserver.cors.CrossOriginConfig;
 import nl.jaapcoomans.demo.microframeworks.todo.domain.TodoService;
 import nl.jaapcoomans.demo.microframeworks.todo.peristsence.InMemoryTodoRepository;
 
 public class HelidonApplication {
     public static void main(final String[] args) {
         long startTime = System.currentTimeMillis();
-        var serverConfig =
-                ServerConfiguration.builder().port(8080).build();
-        var server = WebServer.create(serverConfig, createRouting());
+        var server = WebServer.builder(HelidonApplication::createRouting)
+                .addMediaSupport(JacksonSupport.create())
+                .port(8080).build();
 
         server.start()
                 .thenAccept(ws -> {
@@ -35,9 +36,18 @@ public class HelidonApplication {
         TodoRestController todoRestController = createTodoBackend();
 
         return Routing.builder()
-                .register(JsonBindingSupport.create())
                 .register("/hello", helloWorldRestController)
-                .register("/todos", todoRestController)
+                .register("/todos", createCorsSupport(), todoRestController)
+                .build();
+    }
+
+    private static CorsSupport createCorsSupport() {
+        return CorsSupport.builder()
+                .addCrossOrigin(CrossOriginConfig.builder()
+                        .allowOrigins("*")
+                        .allowMethods("GET", "POST", "PUT", "DELETE")
+                        .build())
+                .addCrossOrigin(CrossOriginConfig.create())
                 .build();
     }
 

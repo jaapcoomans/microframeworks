@@ -16,18 +16,16 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static io.helidon.common.http.Http.Method.DELETE;
-import static io.helidon.common.http.Http.Method.GET;
-import static io.helidon.common.http.Http.Method.POST;
-import static io.helidon.common.http.Http.Status.*;
+import static io.helidon.common.http.Http.Status.NOT_FOUND_404;
+import static io.helidon.common.http.Http.Status.NO_CONTENT_204;
 
 public class TodoRestController implements Service {
     private static final String ID_PATH_PARAM = "id";
 
     private static final Http.RequestMethod PATCH = Http.RequestMethod.create("PATCH");
 
-    private TodoService todoService;
-    private String baseUrl;
+    private final TodoService todoService;
+    private final String baseUrl;
 
     TodoRestController(TodoService todoService, String baseUrl) {
         this.todoService = todoService;
@@ -36,33 +34,12 @@ public class TodoRestController implements Service {
 
     @Override
     public void update(Routing.Rules rules) {
-        rules.anyOf(List.of(GET, DELETE, POST), this::corsFilter)
-                .options(this::corsPreflight)
-                .get("/", this::getAll)
-                .post("/",
-                        Handler.create(CreateTodoCommand.class, this::createTodo))
+        rules.get("/", this::getAll)
+                .post("/", Handler.create(CreateTodoCommand.class, this::createTodo))
                 .delete("/", this::deleteAll)
                 .get("/{id}", this::getTodo)
                 .delete("/{id}", this::deleteTodo)
-                .anyOf(List.of(PATCH), "/{id}",
-                        Handler.create(PartialTodo.class, this::patchTodo));
-    }
-
-    private void corsPreflight(ServerRequest request, ServerResponse response) {
-        this.addCorsHeaders(response);
-        response.status(OK_200).send();
-    }
-
-    private void corsFilter(ServerRequest request, ServerResponse response) {
-        this.addCorsHeaders(response);
-        request.next();
-    }
-
-    private void addCorsHeaders(ServerResponse response) {
-        response.headers().add("Access-Control-Allow-Origin", "*");
-        response.headers().add("Access-Control-Allow-Credentials", "true");
-        response.headers().add("Access-Control-Allow-Headers", "content-type");
-        response.headers().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+                .anyOf(List.of(PATCH), "/{id}", Handler.create(PartialTodo.class, this::patchTodo));
     }
 
     private void getAll(ServerRequest request, ServerResponse response) {
