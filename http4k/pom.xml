@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <http4k.version>3.227.0</http4k.version>
+        <http4k.version>4.9.1.0</http4k.version>
     </properties>
 
     <dependencies>
