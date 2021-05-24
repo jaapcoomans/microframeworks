@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <jooby.version>2.6.0</jooby.version>
+        <jooby.version>2.9.6</jooby.version>
     </properties>
 
     <dependencyManagement>
