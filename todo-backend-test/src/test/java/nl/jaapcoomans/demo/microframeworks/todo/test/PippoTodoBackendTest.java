@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class PippoTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile pippoImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../pippo"));
+    private static final ImageFromDockerfile pippoImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../pippo"));
 
     @Container
-    private static GenericContainer pippoContainer = new GenericContainer(pippoImage).withExposedPorts(8080);
+    private static final GenericContainer<?> pippoContainer = new GenericContainer<>(pippoImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return pippoContainer;
     }
 }

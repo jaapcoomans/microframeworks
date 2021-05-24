@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class JoobyTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile joobyImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../jooby"));
+    private static final ImageFromDockerfile joobyImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../jooby"));
 
     @Container
-    private static GenericContainer joobyContainer = new GenericContainer(joobyImage).withExposedPorts(8080);
+    private static final GenericContainer<?> joobyContainer = new GenericContainer<>(joobyImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return joobyContainer;
     }
 }

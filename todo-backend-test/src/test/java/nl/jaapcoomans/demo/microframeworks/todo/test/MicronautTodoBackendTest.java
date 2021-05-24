@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 public class MicronautTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile micronautImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../micronaut"));
+    private static final ImageFromDockerfile micronautImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../micronaut"));
 
     @Container
-    private static GenericContainer micronautContainer = new GenericContainer(micronautImage).withExposedPorts(8080);
+    private static final GenericContainer<?> micronautContainer = new GenericContainer<>(micronautImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return micronautContainer;
     }
 }

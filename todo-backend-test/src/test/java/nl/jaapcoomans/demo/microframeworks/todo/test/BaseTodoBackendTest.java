@@ -166,11 +166,11 @@ abstract class BaseTodoBackendTest {
 
         var url = response.body().jsonPath().get("url").toString();
 
-        RestAssured.given()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+        var response2 = RestAssured.given()
+                .header(HttpHeaders.ACCEPT, "application/json")
                 .baseUri(replacePort(url))
-                .when().get()
-                .then()
+                .when().get();
+                response2.then()
                 .statusCode(200)
                 .body("id", not(emptyOrNullString()))
                 .body("title", equalTo("Test 4"))

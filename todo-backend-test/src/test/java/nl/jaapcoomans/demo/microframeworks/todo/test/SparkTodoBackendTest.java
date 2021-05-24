@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class SparkTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile sparkImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../spark"));
+    private static final ImageFromDockerfile sparkImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../spark"));
 
     @Container
-    private static GenericContainer sparkContainer = new GenericContainer(sparkImage).withExposedPorts(8080);
+    private static final GenericContainer<?> sparkContainer = new GenericContainer<>(sparkImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return sparkContainer;
     }
 }

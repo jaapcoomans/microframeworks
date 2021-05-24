@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class Http4kTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile http4kImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../http4k"));
+    private static final ImageFromDockerfile http4kImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../http4k"));
 
     @Container
-    private static GenericContainer http4kContainer = new GenericContainer(http4kImage).withExposedPorts(8080);
+    private static final GenericContainer<?> http4kContainer = new GenericContainer<>(http4kImage).withExposedPorts(8080);
 
-    final GenericContainer getContainer() {
+    final GenericContainer<?> getContainer() {
         return http4kContainer;
     }
 }

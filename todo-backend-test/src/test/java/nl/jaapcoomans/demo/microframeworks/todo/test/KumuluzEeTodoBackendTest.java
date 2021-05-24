@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class KumuluzEeTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile kumuluzEeImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../kumuluzee"));
+    private static final ImageFromDockerfile kumuluzEeImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../kumuluzee"));
 
     @Container
-    private static GenericContainer kumuluzEeContainer = new GenericContainer(kumuluzEeImage).withExposedPorts(8080);
+    private static final GenericContainer<?> kumuluzEeContainer = new GenericContainer<>(kumuluzEeImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return kumuluzEeContainer;
     }
 }

@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class KtorTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile ktorImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../ktor"));
+    private static final ImageFromDockerfile ktorImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../ktor"));
 
     @Container
-    private static GenericContainer ktorContainer = new GenericContainer(ktorImage).withExposedPorts(8080);
+    private static final GenericContainer<?> ktorContainer = new GenericContainer<>(ktorImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return ktorContainer;
     }
 }

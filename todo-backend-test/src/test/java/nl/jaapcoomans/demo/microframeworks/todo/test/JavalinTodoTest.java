@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class JavalinTodoTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile javalinImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../javalin"));
+    private static final ImageFromDockerfile javalinImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../javalin"));
 
     @Container
-    private static GenericContainer javalinContainer = new GenericContainer(javalinImage).withExposedPorts(7000);
+    private static final GenericContainer<?> javalinContainer = new GenericContainer<>(javalinImage).withExposedPorts(7000);
 
-    final GenericContainer getContainer() {
+    final GenericContainer<?>getContainer() {
         return javalinContainer;
     }
 }

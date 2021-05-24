@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class HelidonMpTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile helidonImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../helidon-mp"));
+    private static final ImageFromDockerfile helidonImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../helidon-mp"));
 
     @Container
-    private static GenericContainer helidonContainer = new GenericContainer(helidonImage).withExposedPorts(8080);
+    private static final GenericContainer<?> helidonContainer = new GenericContainer<>(helidonImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return helidonContainer;
     }
 }

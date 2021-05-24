@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class RatpackTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile ratpackImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../ratpack"));
+    private static final ImageFromDockerfile ratpackImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../ratpack"));
 
     @Container
-    private static GenericContainer ratpackContainer = new GenericContainer(ratpackImage).withExposedPorts(8080);
+    private static final GenericContainer<?> ratpackContainer = new GenericContainer<>(ratpackImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return ratpackContainer;
     }
 }
