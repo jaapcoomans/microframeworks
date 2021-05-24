@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 
 @Testcontainers
 class BladeTodoBackendTest extends BaseTodoBackendTest {
-    private static ImageFromDockerfile bladeImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../blade"));
+    private static final ImageFromDockerfile bladeImage = new ImageFromDockerfile().withFileFromPath(".", Paths.get("../blade"));
 
     @Container
-    private static GenericContainer bladeContainer = new GenericContainer(bladeImage).withExposedPorts(8080);
+    private static final GenericContainer<?> bladeContainer = new GenericContainer<>(bladeImage).withExposedPorts(8080);
 
     @Override
-    GenericContainer getContainer() {
+    GenericContainer<?> getContainer() {
         return bladeContainer;
     }
 }

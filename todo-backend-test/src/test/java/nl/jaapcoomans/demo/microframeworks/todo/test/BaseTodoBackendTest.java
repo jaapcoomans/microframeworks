@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 abstract class BaseTodoBackendTest {
     private static final String API_ROOT = "/todos";
 
-    abstract GenericContainer getContainer();
+    abstract GenericContainer<?> getContainer();
 
     String getBaseUrl() {
         return "http://" + getContainer().getContainerIpAddress() + ":" + getContainer().getFirstMappedPort();
