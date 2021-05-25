@@ -12,6 +12,7 @@ public class PippoApplication {
 
     public static void main(String[] args) {
         Pippo pippo = new Pippo();
+        pippo.getServer().getSettings().host("0.0.0.0");
         pippo.getServer().setPort(PORT);
 
         pippo.ANY("/.*", createCorsHandler());
