@@ -1,0 +1,63 @@
+version: "3"
+
+services:
+  armeria:
+    build: armeria
+    ports:
+      - "7001:8080"
+  blade:
+    build: blade
+    ports:
+      - "7002:8080"
+  dropwizard:
+    build: dropwizard
+    ports:
+      - "7003:8080"
+  helidon-mp:
+    build: helidon-mp
+    ports:
+      - "7004:8080"
+  helidon-se:
+    build: helidon-se
+    ports:
+      - "7005:8080"
+  http4k:
+    build: http4k
+    ports:
+      - "7006:8080"
+  javalin:
+    build: javalin
+    ports:
+      - "7007:7000"
+  jooby:
+    build: jooby
+    ports:
+      - "7008:8080"
+  ktor:
+    build: ktor
+    ports:
+      - "7009:8080"
+  kumuluzee:
+    build: kumuluzee
+    ports:
+      - "7010:8080"
+  micronaut:
+    build: micronaut
+    ports:
+      - "7011:8080"
+  minijax:
+    build: minijax
+    ports:
+      - "7012:8080"
+  pippo:
+    build: pippo
+    ports:
+      - "7013:8080"
+  ratpack:
+    build: ratpack
+    ports:
+      - "7014:8080"
+  spark:
+    build: spark
+    ports:
+      - "7015:8080"
