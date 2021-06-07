@@ -61,3 +61,7 @@ services:
     build: spark
     ports:
       - "7015:8080"
+  quarkus:
+    build: quarkus
+    ports:
+      - "7016:8080"

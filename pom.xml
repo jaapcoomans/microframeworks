@@ -37,6 +37,7 @@
         <module>micronaut</module>
         <module>minijax</module>
         <module>pippo</module>
+        <module>quarkus</module>
         <module>ratpack</module>
         <module>spark</module>
 
