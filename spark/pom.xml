@@ -14,7 +14,7 @@
 
     <properties>
         <spark.version>2.9.3</spark.version>
-        <jackson.version>2.12.6.1</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
     </properties>
 
     <dependencies>
