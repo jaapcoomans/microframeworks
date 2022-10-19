@@ -14,7 +14,7 @@
 
     <properties>
         <javalin.version>3.13.7</javalin.version>
-        <jackson.version>2.12.6.1</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
     </properties>
 
     <dependencies>
